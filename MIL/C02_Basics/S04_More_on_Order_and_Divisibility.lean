@@ -84,14 +84,8 @@ theorem aux : min a b + c ≤ min (a + c) (b + c) := by
   apply le_min h₁ h₂
 
 example : min a b + c = min (a + c) (b + c) := by
-  have h : min (a + c) (b + c) ≤ min a b + c := by
-    have h₁ : min (a + c) (b + c) + -c ≤ min (a + c + -c) (b + c + -c) := by
-      apply aux
-    repeat rw [add_neg_cancel_right] at h₁
-    linarith
-  apply le_antisymm (aux a b c) h
-
-#check (abs_add : ∀ a b : ℝ, |a + b| ≤ |a| + |b|)
+  sorry
+#check (abs_add_le : ∀ a b : ℝ, |a + b| ≤ |a| + |b|)
 
 example : |a| - |b| ≤ |a - b| := by
   have h : |a - b + b| ≤ |a - b| + |b| := by

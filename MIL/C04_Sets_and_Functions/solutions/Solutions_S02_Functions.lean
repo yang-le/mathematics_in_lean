@@ -55,31 +55,31 @@ example : f ⁻¹' (u ∪ v) = f ⁻¹' u ∪ f ⁻¹' v := by
 example : f '' (s ∩ t) ⊆ f '' s ∩ f '' t := by
   rintro y ⟨x, ⟨xs, xt⟩, rfl⟩
   constructor
-  . use x, xs
-  . use x, xt
+  · use x, xs
+  · use x, xt
 
 example (h : Injective f) : f '' s ∩ f '' t ⊆ f '' (s ∩ t) := by
   rintro y ⟨⟨x₁, x₁s, rfl⟩, ⟨x₂, x₂t, fx₂eq⟩⟩
   use x₁
   constructor
-  . use x₁s
+  · use x₁s
     rw [← h fx₂eq]
     exact x₂t
-  . rfl
+  · rfl
 
 example : f '' s \ f '' t ⊆ f '' (s \ t) := by
   rintro y ⟨⟨x₁, x₁s, rfl⟩, h⟩
   use x₁
   constructor
-  . constructor
-    . exact x₁s
-    . intro h'
+  · constructor
+    · exact x₁s
+    · intro h'
       apply h
       use x₁, h'
-  . rfl
+  · rfl
 
 example : f ⁻¹' u \ f ⁻¹' v ⊆ f ⁻¹' (u \ v) :=
-  fun x ↦ id
+  fun _x ↦ id
 
 example : f '' s ∩ v = f '' (s ∩ f ⁻¹' v) := by
   ext y; constructor
@@ -146,8 +146,7 @@ section
 open Set Real
 
 example : InjOn sqrt { x | x ≥ 0 } := by
-  intro x xnonneg y ynonneg
-  intro e
+  intro x xnonneg y ynonneg e
   calc
     x = sqrt x ^ 2 := by rw [sq_sqrt xnonneg]
     _ = sqrt y ^ 2 := by rw [e]
@@ -155,8 +154,7 @@ example : InjOn sqrt { x | x ≥ 0 } := by
 
 
 example : InjOn (fun x ↦ x ^ 2) { x : ℝ | x ≥ 0 } := by
-  intro x xnonneg y ynonneg
-  intro e
+  intro x xnonneg y ynonneg e
   dsimp at *
   calc
     x = sqrt (x ^ 2) := by rw [sqrt_sq xnonneg]
@@ -228,7 +226,7 @@ example : Surjective f ↔ RightInverse (inverse f) f := by
   apply h
 
 example : Surjective f ↔ RightInverse (inverse f) f :=
-  ⟨fun h y ↦ inverse_spec _ (h _), fun h y ↦ ⟨inverse f y, h _⟩⟩
+  ⟨fun h _y ↦ inverse_spec _ (h _), fun h y ↦ ⟨inverse f y, h _⟩⟩
 
 end
 

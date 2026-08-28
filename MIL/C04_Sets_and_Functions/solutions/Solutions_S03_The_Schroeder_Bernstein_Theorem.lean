@@ -37,8 +37,7 @@ theorem sb_right_inv {x : α} (hx : x ∉ sbSet f g) : g (invFun g x) = x := by
 theorem sb_injective (hf : Injective f) : Injective (sbFun f g) := by
   set A := sbSet f g with A_def
   set h := sbFun f g with h_def
-  intro x₁ x₂
-  intro (hxeq : h x₁ = h x₂)
+  intro x₁ x₂ (hxeq : h x₁ = h x₂)
   show x₁ = x₂
   simp only [h_def, sbFun, ← A_def] at hxeq
   by_cases xA : x₁ ∈ A ∨ x₂ ∈ A
@@ -59,11 +58,11 @@ theorem sb_injective (hf : Injective f) : Injective (sbFun f g) := by
       exact ⟨x₁, hn, x₂eq.symm⟩
     rw [if_pos x₁A, if_pos x₂A] at hxeq
     exact hf hxeq
-  push_neg  at xA
+  push_neg at xA
   rw [if_neg xA.1, if_neg xA.2] at hxeq
   rw [← sb_right_inv f g xA.1, hxeq, sb_right_inv f g xA.2]
 
-theorem sb_surjective (hf : Injective f) (hg : Injective g) : Surjective (sbFun f g) := by
+theorem sb_surjective (hg : Injective g) : Surjective (sbFun f g) := by
   set A := sbSet f g with A_def
   set h := sbFun f g with h_def
   intro y
@@ -78,10 +77,11 @@ theorem sb_surjective (hf : Injective f) (hg : Injective g) : Surjective (sbFun 
     have : x ∈ A := by
       rw [A_def, sbSet, mem_iUnion]
       exact ⟨n, xmem⟩
-    simp only [h_def, sbFun, if_pos this]
-    exact hg hx
+    rw [h_def, sbFun, if_pos this]
+    apply hg hx
+
   use g y
-  simp only [h_def, sbFun, if_neg gyA]
+  rw [h_def, sbFun, if_neg gyA]
   apply leftInverse_invFun hg
 
 end

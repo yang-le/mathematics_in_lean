@@ -21,14 +21,12 @@ For the Lean 3 version, see [https://github.com/leanprover-community/mathematics
 Do the following:
 
 1. Install Lean 4 and VS Code following
-   these [instructions](https://leanprover-community.github.io/get_started.html).
+   these [instructions](https://lean-lang.org/install/).
 
-2. Make sure you have [git](https://git-scm.com/) installed.
+2. Fetch the repository by clicking on the forall symbol in the upper right corner of VS Code,
+   and choose `Open Project`, `Download Project`, and `Mathematics in Lean`.
 
-3. Follow these [instructions](https://leanprover-community.github.io/install/project.html#working-on-an-existing-project)
-   to fetch the `mathematics_in_lean` repository and open it up in VS Code.
-
-4. Each section in the textbook has an associated Lean file with examples and exercises.
+3. Each section in the textbook has an associated Lean file with examples and exercises.
    You can find them in the folder `MIL`, organized by chapter.
    We strongly recommend making a copy of that folder and experimenting and doing the
    exercises in that copy.
@@ -36,15 +34,9 @@ Do the following:
    You can call the copy `my_files` or whatever you want and use it to create
    your own Lean files as well.
 
-At that point, you can open the textbook in a side panel in VS Code as follows:
-
-1. Type `ctrl-shift-P` (`command-shift-P` in macOS).
-
-2. Type `Lean 4: Docview: Open Docview` in the bar that appears, and then
-  press return. (You can press return to select it as soon as it is highlighted
-  in the menu.)
-
-3. In the window that opens, click on `Open documentation of current project`.
+At that point, you can open the textbook in a web browser
+at [https://leanprover-community.github.io/mathematics_in_lean/](https://leanprover-community.github.io/mathematics_in_lean/)
+and start reading and doing the exercises in VS Code.
 
 The textbook and this repository are still a work in progress.
 You can update the repository by typing `git pull`
@@ -80,32 +72,6 @@ If you forget, don't worry: the virtual machine will stop itself after a certain
 amount of time of inactivity.
 
 To restart a previous workspace, visit <https://github.com/codespaces>.
-
-
-## To use this repository with Gitpod
-
-Gitpod is an alternative to Github Codespaces, but is a little less convenient,
-since it requires you to verify your phone number.
-If you have a Gitpod account or are willing to sign up for one,
-point your browser to
-[https://gitpod.io/#/https://github.com/leanprover-community/mathematics_in_lean](https://gitpod.io/#/https://github.com/leanprover-community/mathematics_in_lean).
-This creates a virtual machine in the cloud,
-and installs Lean and Mathlib.
-It then presents you with a VS Code window, running in a virtual
-copy of the repository.
-We suggest making a copy of the `MIL` directory, as described
-in the instructions above for using MIL on your computer.
-You can update the repository by opening a terminal in the browser
-and typing `git pull` followed by `lake exe cache get` as above.
-
-Gitpod gives you 50 free hours every month.
-When you are done working, choose `Stop workspace` from the menu on the left.
-The workspace should also stop automatically
-30 minutes after the last interaction or 3 minutes after closing the tab.
-
-To restart a previous workspace, go to [https://gitpod.io/workspaces/](https://gitpod.io/workspaces/).
-If you change the filter from Active to All, you will see all your recent workspaces.
-You can pin a workspace to keep it on the list of active ones.
 
 
 ## Contributing

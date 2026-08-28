@@ -1,5 +1,4 @@
 import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Algebra.BigOperators.Basic
 import MIL.Common
 
 def fac : ℕ → ℕ
@@ -24,7 +23,7 @@ variable {α : Type*} (s : Finset ℕ) (f : ℕ → ℕ) (n : ℕ)
 open BigOperators
 open Finset
 
-theorem sum_sqr (n : ℕ) : ∑ i in range (n + 1), i ^ 2 = n * (n + 1) * (2 * n + 1) / 6 := by
+theorem sum_sqr (n : ℕ) : ∑ i ∈ range (n + 1), i ^ 2 = n * (n + 1) * (2 * n + 1) / 6 := by
   symm;
   apply Nat.div_eq_of_eq_mul_right (by norm_num : 0 < 6)
   induction' n with n ih
@@ -34,7 +33,7 @@ theorem sum_sqr (n : ℕ) : ∑ i in range (n + 1), i ^ 2 = n * (n + 1) * (2 * n
 
 end
 
-inductive MyNat
+inductive MyNat where
   | zero : MyNat
   | succ : MyNat → MyNat
 
@@ -45,7 +44,7 @@ def add : MyNat → MyNat → MyNat
   | x, succ y => succ (add x y)
 
 def mul : MyNat → MyNat → MyNat
-  | x, zero => zero
+  | _, zero => zero
   | x, succ y => add (mul x y) x
 
 theorem zero_add (n : MyNat) : add zero n = n := by

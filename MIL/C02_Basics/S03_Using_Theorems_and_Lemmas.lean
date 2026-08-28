@@ -21,7 +21,7 @@ end
 example (x y z : ℝ) (h₀ : x ≤ y) (h₁ : y ≤ z) : x ≤ z := by
   apply le_trans
   · apply h₀
-  . apply h₁
+  · apply h₁
 
 example (x y z : ℝ) (h₀ : x ≤ y) (h₁ : y ≤ z) : x ≤ z := by
   apply le_trans h₀
@@ -68,17 +68,17 @@ example (h : 1 ≤ a) (h' : b ≤ c) : 2 + a + exp b ≤ 3 * a + exp c := by
 #check (log_le_log : 0 < a → a ≤ b → log a ≤ log b)
 #check (log_lt_log : 0 < a → a < b → log a < log b)
 #check (add_le_add : a ≤ b → c ≤ d → a + c ≤ b + d)
-#check (add_le_add_left : a ≤ b → ∀ c, c + a ≤ c + b)
-#check (add_le_add_right : a ≤ b → ∀ c, a + c ≤ b + c)
+#check (add_le_add_right : a ≤ b → ∀ c, c + a ≤ c + b)
+#check (add_le_add_left : a ≤ b → ∀ c, a + c ≤ b + c)
 #check (add_lt_add_of_le_of_lt : a ≤ b → c < d → a + c < b + d)
 #check (add_lt_add_of_lt_of_le : a < b → c ≤ d → a + c < b + d)
-#check (add_lt_add_left : a < b → ∀ c, c + a < c + b)
-#check (add_lt_add_right : a < b → ∀ c, a + c < b + c)
+#check (add_lt_add_right : a < b → ∀ c, c + a < c + b)
+#check (add_lt_add_left : a < b → ∀ c, a + c < b + c)
 #check (add_nonneg : 0 ≤ a → 0 ≤ b → 0 ≤ a + b)
 #check (add_pos : 0 < a → 0 < b → 0 < a + b)
 #check (add_pos_of_pos_of_nonneg : 0 < a → 0 ≤ b → 0 < a + b)
 #check (exp_pos : ∀ a, 0 < exp a)
-#check add_le_add_left
+#check add_le_add_right
 
 example (h : a ≤ b) : exp a ≤ exp b := by
   rw [exp_le_exp]
@@ -114,36 +114,25 @@ example (h : a ≤ b) : c - exp b ≤ c - exp a := by
   refine sub_le_sub_left ?h c
   exact exp_le_exp.mpr h
 
-example : 2 * a * b ≤ a ^ 2 + b ^ 2 := by
-  have h : 0 ≤ a ^ 2 - 2 * a * b + b ^ 2
+example : 2*a*b ≤ a^2 + b^2 := by
+  have h : 0 ≤ a^2 - 2*a*b + b^2
   calc
-    a ^ 2 - 2 * a * b + b ^ 2 = (a - b) ^ 2 := by ring
+    a^2 - 2*a*b + b^2 = (a - b)^2 := by ring
     _ ≥ 0 := by apply pow_two_nonneg
 
   calc
-    2 * a * b = 2 * a * b + 0 := by ring
-    _ ≤ 2 * a * b + (a ^ 2 - 2 * a * b + b ^ 2) := add_le_add (le_refl _) h
-    _ = a ^ 2 + b ^ 2 := by ring
+    2*a*b = 2*a*b + 0 := by ring
+    _ ≤ 2*a*b + (a^2 - 2*a*b + b^2) := add_le_add (le_refl _) h
+    _ = a^2 + b^2 := by ring
 
-example : 2 * a * b ≤ a ^ 2 + b ^ 2 := by
-  have h : 0 ≤ a ^ 2 - 2 * a * b + b ^ 2
+example : 2*a*b ≤ a^2 + b^2 := by
+  have h : 0 ≤ a^2 - 2*a*b + b^2
   calc
-    a ^ 2 - 2 * a * b + b ^ 2 = (a - b) ^ 2 := by ring
+    a^2 - 2*a*b + b^2 = (a - b)^2 := by ring
     _ ≥ 0 := by apply pow_two_nonneg
   linarith
 
-example : |a * b| ≤ (a ^ 2 + b ^ 2) / 2 := by
-  apply abs_le'.mpr
-  constructor
-  have h₁ : 0 ≤ a^2 + b^2 - 2 * a * b
-  calc
-    a^2 + b^2 - 2 * a * b = (a - b)^2 := by ring
-    _ ≥ 0 := by apply pow_two_nonneg
-  linarith
-  have h₂ : 0 ≤ a^2 + b^2 + 2 * a * b
-  calc
-    a^2 + b^2 + 2 * a * b = (a + b)^2 := by ring
-    _ ≥ 0 := by apply pow_two_nonneg
-  linarith
+example : |a*b| ≤ (a^2 + b^2)/2 := by
+  sorry
 
 #check abs_le'.mpr
