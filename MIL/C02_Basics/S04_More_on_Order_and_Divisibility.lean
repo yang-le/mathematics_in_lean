@@ -76,20 +76,27 @@ example : min (min a b) c = min a (min b c) := by
 
 theorem aux : min a b + c ≤ min (a + c) (b + c) := by
   have h₁ : min a b + c ≤ a + c := by
-    apply add_le_add_right
+    apply add_le_add_left
     apply min_le_left
   have h₂ : min a b + c ≤ b + c := by
-    apply add_le_add_right
+    apply add_le_add_left
     apply min_le_right
   apply le_min h₁ h₂
 
 example : min a b + c = min (a + c) (b + c) := by
-  sorry
+  apply le_antisymm
+  · apply aux
+  have h : min (a + c) (b + c) - c ≤ min a b := by
+    apply le_trans
+    apply aux
+    rw [add_neg_cancel_right, add_neg_cancel_right]
+  linarith
+
 #check (abs_add_le : ∀ a b : ℝ, |a + b| ≤ |a| + |b|)
 
 example : |a| - |b| ≤ |a - b| := by
   have h : |a - b + b| ≤ |a - b| + |b| := by
-    apply abs_add (a - b) b
+    apply abs_add_le (a - b) b
   rw [sub_add_cancel] at h
   linarith
 end

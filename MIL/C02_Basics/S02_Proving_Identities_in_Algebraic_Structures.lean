@@ -53,7 +53,7 @@ theorem neg_add_cancel_left (a b : R) : -a + (a + b) = b := by
 
 -- Prove these:
 theorem add_neg_cancel_right (a b : R) : a + b + -b = a := by
-  rw [add_assoc, add_right_neg, add_zero]
+  rw [add_assoc, add_neg_cancel, add_zero]
 
 theorem add_left_cancel {a b c : R} (h : a + b = a + c) : b = c := by
   rw [← neg_add_cancel_left a b, h, neg_add_cancel_left]
@@ -73,12 +73,12 @@ theorem zero_mul (a : R) : 0 * a = 0 := by
 
 theorem neg_eq_of_add_eq_zero {a b : R} (h : a + b = 0) : -a = b := by
   have h : a + -a = a + b := by
-    rw [add_right_neg, h]
+    rw [add_neg_cancel, h]
   rw [add_left_cancel h]
 
 theorem eq_neg_of_add_eq_zero {a b : R} (h : a + b = 0) : a = -b := by
   have h : b + a = b + -b := by
-    rw [add_right_neg, add_comm]
+    rw [add_neg_cancel, add_comm]
     exact h
   rw [add_left_cancel h]
 
@@ -88,7 +88,7 @@ theorem neg_zero : (-0 : R) = 0 := by
 
 theorem neg_neg (a : R) : - -a = a := by
   apply neg_eq_of_add_eq_zero
-  apply add_left_neg
+  apply neg_add_cancel
 
 end MyRing
 
@@ -112,7 +112,7 @@ variable {R : Type*} [Ring R]
 
 theorem self_sub (a : R) : a - a = 0 := by
   rw [sub_eq_add_neg]
-  rw [add_right_neg]
+  rw [add_neg_cancel]
 
 theorem one_add_one_eq_two : 1 + 1 = (2 : R) := by
   norm_num
@@ -141,18 +141,22 @@ variable {G : Type*} [Group G]
 
 namespace MyGroup
 
-theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 := by
-  sorry
+theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 :=
+  calc
+    a * a⁻¹ = (a * a⁻¹)⁻¹ * (a * a⁻¹) * a * a⁻¹ := by
+      rw [inv_mul_cancel, one_mul]
+    _ = 1 := by
+      rw [← mul_assoc, mul_assoc ((a * a⁻¹)⁻¹ * a), inv_mul_cancel, mul_assoc, one_mul, mul_assoc, inv_mul_cancel]
 
 theorem mul_one (a : G) : a * 1 = a := by
-  rw [← mul_left_inv a, ← mul_assoc, mul_right_inv, one_mul]
+  rw [← inv_mul_cancel a, ← mul_assoc, mul_inv_cancel, one_mul]
 
-theorem mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ := by
-  have h : (a * b)⁻¹ * a * b * b⁻¹ * a⁻¹ = b⁻¹ * a⁻¹ := by
-    rw [mul_assoc (a * b)⁻¹, mul_left_inv, one_mul]
-  rw [mul_assoc, mul_assoc, ← mul_assoc b, mul_right_inv] at h
-  rw [one_mul, mul_assoc, mul_right_inv, mul_one] at h
-  exact h
+theorem mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ :=
+  calc
+    (a * b)⁻¹ = (a * b)⁻¹ * a * b * b⁻¹ * a⁻¹ := by
+      rw [mul_assoc ((a * b)⁻¹ * a), mul_inv_cancel, mul_one, mul_assoc, mul_inv_cancel, mul_one]
+    _ = b⁻¹ * a⁻¹ := by
+      rw [mul_assoc (a * b)⁻¹, inv_mul_cancel, one_mul]
 
 end MyGroup
 
