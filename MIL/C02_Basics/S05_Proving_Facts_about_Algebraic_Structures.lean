@@ -142,14 +142,14 @@ variable (a b c : R)
 
 example (h : a ≤ b) : 0 ≤ b - a := by
   have h₁ : -a + a ≤ -a + b := by
-    apply add_le_add_left h
-  rw [neg_add_self, neg_add_eq_sub] at h₁
+    apply add_le_add_right h
+  rw [neg_add_cancel, neg_add_eq_sub] at h₁
   exact h₁
 
 example (h: 0 ≤ b - a) : a ≤ b := by
   have h₁ : a + 0 ≤ a + (b - a) := by
-    apply add_le_add_left h
-  rw [add_zero, ← neg_add_eq_sub, ← add_assoc, add_neg_self, zero_add] at h₁
+    apply add_le_add_right h
+  rw [add_zero, ← neg_add_eq_sub, ← add_assoc, add_neg_cancel, zero_add] at h₁
   exact h₁
 
 example (h : a ≤ b) (h' : 0 ≤ c) : a * c ≤ b * c := by
@@ -170,6 +170,9 @@ variable (x y z : X)
 #check (dist_triangle x y z : dist x z ≤ dist x y + dist y z)
 
 example (x y : X) : 0 ≤ dist x y := by
-  sorry
+  have h : 0 ≤ dist x y + dist y x := by
+    rw [← dist_self x]
+    apply dist_triangle
+  linarith [dist_comm x y]
 
 end

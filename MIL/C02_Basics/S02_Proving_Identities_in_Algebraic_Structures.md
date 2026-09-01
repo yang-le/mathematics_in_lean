@@ -62,7 +62,7 @@ $$\begin{equation}
 
 以上两个定理可以用来证明下面的
 $$\begin{equation}
-\forall a, b, c \in R, ~ a + b = a + c \Rightarrow b = c
+\forall a, b, c \in R, ~ a + b = a + c \implies b = c
 \end{equation}$$
 
 证明：
@@ -71,7 +71,7 @@ $$\begin{equation}
 以及
 
 $$\begin{equation}
-\forall a, b, c \in R, ~ a + b = c + b \Rightarrow a = c
+\forall a, b, c \in R, ~ a + b = c + b \implies a = c
 \end{equation}$$
 
 证明：
@@ -97,7 +97,7 @@ $$\begin{equation}
 
 以下是一些常用的结论
 $$\begin{equation}
-\forall a, b \in R, ~ a + b = 0 \Rightarrow -a = b
+\forall a, b \in R, ~ a + b = 0 \implies -a = b
 \end{equation}$$
 
 证明：
@@ -105,7 +105,7 @@ $$\begin{equation}
 
 类似地
 $$\begin{equation}
-\forall a, b \in R, ~ a + b = 0 \Rightarrow a = -b
+\forall a, b \in R, ~ a + b = 0 \implies a = -b
 \end{equation}$$
 
 证明：
