@@ -63,8 +63,12 @@ example {x y : ℝ} (h : x ≤ y ∧ x ≠ y) : ¬y ≤ x := by
 example {x y : ℝ} (h : x ≤ y ∧ x ≠ y) : ¬y ≤ x :=
   fun h' ↦ h.right (le_antisymm h.left h')
 
-example {m n : ℕ} (h : m ∣ n ∧ m ≠ n) : m ∣ n ∧ ¬n ∣ m :=
-  sorry
+example {m n : ℕ} (h : m ∣ n ∧ m ≠ n) : m ∣ n ∧ ¬n ∣ m := by
+  constructor
+  · exact h.left
+  · contrapose! h
+    intro h'
+    exact dvd_antisymm h' h
 
 example : ∃ x : ℝ, 2 < x ∧ x < 4 :=
   ⟨5 / 2, by norm_num, by norm_num⟩
@@ -101,15 +105,34 @@ example {x y : ℝ} (h : x ≤ y) : ¬y ≤ x ↔ x ≠ y := by
 example {x y : ℝ} (h : x ≤ y) : ¬y ≤ x ↔ x ≠ y :=
   ⟨fun h₀ h₁ ↦ h₀ (by rw [h₁]), fun h₀ h₁ ↦ h₀ (le_antisymm h h₁)⟩
 
-example {x y : ℝ} : x ≤ y ∧ ¬y ≤ x ↔ x ≤ y ∧ x ≠ y :=
-  sorry
+example {x y : ℝ} : x ≤ y ∧ ¬y ≤ x ↔ x ≤ y ∧ x ≠ y := by
+  constructor
+  · rintro ⟨a, ha⟩
+    constructor
+    · exact a
+    linarith
+  · rintro ⟨a, ha⟩
+    constructor
+    · exact a
+    push Not
+    exact lt_of_le_of_ne a ha
 
 theorem aux {x y : ℝ} (h : x ^ 2 + y ^ 2 = 0) : x = 0 :=
-  have h' : x ^ 2 = 0 := by sorry
+  have h' : x ^ 2 = 0 := by
+    have h1 : x ^ 2 ≥ 0 := pow_two_nonneg x
+    have h2 : y ^ 2 ≥ 0 := pow_two_nonneg y
+    linarith
   eq_zero_of_pow_eq_zero h'
 
-example (x y : ℝ) : x ^ 2 + y ^ 2 = 0 ↔ x = 0 ∧ y = 0 :=
-  sorry
+example (x y : ℝ) : x ^ 2 + y ^ 2 = 0 ↔ x = 0 ∧ y = 0 := by
+  constructor
+  · intro h
+    have : y ^ 2 + x ^ 2 = 0 := by
+      rw [add_comm] at h
+      exact h
+    exact ⟨aux h, aux this⟩
+  rintro ⟨rfl, rfl⟩
+  norm_num
 
 section
 
@@ -126,11 +149,13 @@ end
 
 theorem not_monotone_iff {f : ℝ → ℝ} : ¬Monotone f ↔ ∃ x y, x ≤ y ∧ f x > f y := by
   rw [Monotone]
-  push_neg
+  push Not
   rfl
 
 example : ¬Monotone fun x : ℝ ↦ -x := by
-  sorry
+  rw [not_monotone_iff]
+  use 1, 2
+  norm_num
 
 section
 variable {α : Type*} [PartialOrder α]
@@ -138,7 +163,19 @@ variable (a b : α)
 
 example : a < b ↔ a ≤ b ∧ a ≠ b := by
   rw [lt_iff_le_not_ge]
-  sorry
+  constructor
+  · rintro ⟨ale, bgt⟩
+    constructor
+    · exact ale
+    intro h
+    apply bgt
+    rw [h]
+  rintro ⟨ale, bne⟩
+  constructor
+  · exact ale
+  intro h
+  apply bne
+  exact le_antisymm ale h
 
 end
 
@@ -148,10 +185,16 @@ variable (a b c : α)
 
 example : ¬a < a := by
   rw [lt_iff_le_not_ge]
-  sorry
+  push Not
+  tauto
 
 example : a < b → b < c → a < c := by
   simp only [lt_iff_le_not_ge]
-  sorry
+  rintro ⟨ale, _⟩ ⟨ble, cge⟩
+  constructor
+  · exact le_trans ale ble
+  intro h
+  apply cge
+  exact le_trans h ale
 
 end
